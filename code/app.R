@@ -13,6 +13,8 @@ library(ggplot2)
 library(dplyr)
 library(fitdistrplus)
 library(gtools)
+library(catdata)
+library(vcd)
 
 source("/Users/ruchithau/Desktop/AHDS_assessment2_2331122/code/data-prep.R")
 
@@ -34,23 +36,6 @@ summary_func <- function(BMX_DEMO_new, x_var, y_var) {
     summarize(count = n())
 }
 
-#Create a function to perform the chi-squared test of independence
-  test_func <- function(BMX_DEMO_new, x_var, y_var) {
-  BMX_DEMO_new_subset <- na.omit(BMX_DEMO_new[ , c(x_var, y_var)])
-  if(nrow(BMX_DEMO_new_subset)<5){
-   return("Not enough data to perform the test")
-  }
-  # convert columns to factors
-  BMX_DEMO_new_subset[, x_var] <- as.factor(BMX_DEMO_new_subset[, x_var])
-  BMX_DEMO_new_subset[, y_var] <- as.factor(BMX_DEMO_new_subset[, y_var])
-  
-  # perform the chi-squared test of independence
-  chisq_test_result <- chisq.test(BMX_DEMO_new_subset[,x_var], BMX_DEMO_new_subset[,y_var], simulate.p.value = TRUE)
-  
-  # print the test result
-  print(chisq_test_result)
-}
-
 # create the Shiny app
 shinyApp(
   ui = fluidPage(
@@ -60,7 +45,8 @@ shinyApp(
     selectInput("y_var", "Y Variable", names(BMX_DEMO_new), selected = names(BMX_DEMO_new)[2]),
     plotOutput("plot"),
     tableOutput("summary"),
-    verbatimTextOutput("chisq_test_result"),
+    actionButton("go", "Calculate Cramer's V"),
+    verbatimTextOutput("corr"),
     downloadButton("downloadPlot", "Download Plot")
   ),
   server = function(input, output) {
@@ -72,8 +58,15 @@ shinyApp(
       summary_func(BMX_DEMO_new, input$x_var, input$y_var)
     })
     
-    output$chisq_test_result <- renderPrint({
-      test_func(BMX_DEMO_new, input$x_var, input$y_var)
+    # Create a reactive function to calculate Cramer's 
+    
+    corr <- reactive({
+      chi_sq <- chisq.test(table(BMX_DEMO_new[,input$x_var], BMX_DEMO_new[,input$y_var]))
+      sqrt(chi_sq$statistic / (nrow(BMX_DEMO_new) * (min(ncol(BMX_DEMO_new), nrow(BMX_DEMO_new)) - 1)))
+    })
+    
+    observeEvent(input$go, {
+    output$corr <- renderText(paste("Cramer's V:", corr()))
     })
     
     output$downloadPlot <- downloadHandler(
@@ -86,3 +79,4 @@ shinyApp(
     )
   }
 )
+
