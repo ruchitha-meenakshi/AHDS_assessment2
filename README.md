@@ -23,3 +23,6 @@ categorised as "Citizen by birth or naturalisation", "Not a citizen."
 The final product is a data frame titled "BMX DEMO" that comprises demographic and BMI information that has been classified 
 according to many parameters, including age, gender, BMI, race, country of birth, and citizenship status. This may be beneficial 
 for examining data patterns and associations.
+
+
+The code uses Cramer's test for finding the correlation between the categorical variables.
