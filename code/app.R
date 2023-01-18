@@ -16,7 +16,7 @@ library(gtools)
 library(catdata)
 library(vcd)
 
-source("/Users/ruchithau/Desktop/AHDS_assessment2_2331122/code/data-prep.R")
+source("~/Desktop/AHDS_assessment2_2331122/code/data-prep.R")
 
 # create a function to generate the plot based on user inputs
 plot_func <- function(BMX_DEMO_new, x_var, y_var) {

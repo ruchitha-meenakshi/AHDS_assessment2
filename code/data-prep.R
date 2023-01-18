@@ -1,6 +1,6 @@
 # importing the csv files
-BMX <- read.csv("/Users/ruchithau/Desktop/AHDS_assessment2_2331122/data_raw/BMX_D.csv")
-DEMO <- read.csv("/Users/ruchithau/Desktop/AHDS_assessment2_2331122/data_raw/DEMO_D.csv")
+BMX <- read.csv("~/Desktop/AHDS_assessment2_2331122/data_raw/BMX_D.csv")
+DEMO <- read.csv("~/Desktop/AHDS_assessment2_2331122/data_raw/DEMO_D.csv")
 
 #creating new data frame BMX_new by selecting the SEQN and BMXBMI from BMX dataset
 BMX_new <- data.frame(BMX$SEQN, BMX$BMXBMI)
@@ -62,5 +62,5 @@ BMX_DEMO_new$LENGTH_OF_TIME_IN_US_factor <- as.factor(BMX_DEMO_new$LENGTH_OF_TIM
 
 BMX_DEMO_new <- na.omit(BMX_DEMO_new)
 
-write.csv(BMX_DEMO_new,"/Users/ruchithau/Desktop/AHDS_assessment2_2331122/data_clean/BMX_DEMO_clean.csv")
+write.csv(BMX_DEMO_new,"~/Desktop/AHDS_assessment2_2331122/data_clean/BMX_DEMO_clean.csv")
 
